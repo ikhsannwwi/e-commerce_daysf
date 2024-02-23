@@ -25,16 +25,16 @@
         </li>
 
         <!-- Layouts -->
-        <li class="menu-item">
+        <li class="menu-item {{ Route::is('admin.kategori_set*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Data Master</div>
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Without menu">Without menu</div>
+                <li class="menu-item {{ Route::is('admin.kategori_set*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.kategori_set') }}" class="menu-link">
+                        <div data-i18n="Kategori Set">Kategori Set</div>
                     </a>
                 </li>
             </ul>

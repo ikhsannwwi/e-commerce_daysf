@@ -16733,3 +16733,8 @@ html:not(.layout-footer-fixed) .content-wrapper {
   border-color: #dc3545;
   color: #dc3545;
 }
+
+.form-group.is-invalid * {
+  border-color: #dc3545;
+  color: #dc3545;
+}

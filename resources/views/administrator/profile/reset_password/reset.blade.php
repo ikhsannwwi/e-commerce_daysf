@@ -110,8 +110,39 @@
 
 @push('js')
     <script src="{{ asset_administrator('assets/plugins/parsleyjs/parsley.min.js') }}"></script>
-    <script type="text/javascript">
+<script src="{{ asset_administrator('assets/plugins/parsleyjs/page/parsley.js') }}"></script>
+<script type="text/javascript">
         $(document).ready(function() {
+            
+            var optionToast = {
+                classname: "toast",
+                transition: "fade",
+                insertBefore: true,
+                duration: 4000,
+                enableSounds: true,
+                autoClose: true,
+                progressBar: true,
+                sounds: {
+                    info: toastMessages.path + "/sounds/info/1.mp3",
+                    // path to sound for successfull message:
+                    success: toastMessages.path + "/sounds/success/1.mp3",
+                    // path to sound for warn message:
+                    warning: toastMessages.path + "/sounds/warning/1.mp3",
+                    // path to sound for error message:
+                    error: toastMessages.path + "/sounds/error/1.mp3",
+                },
+
+                onShow: function(type) {
+                    console.log("a toast " + type + " message is shown!");
+                },
+                onHide: function(type) {
+                    console.log("the toast " + type + " message is hidden!");
+                },
+
+                // the placement where prepend the toast container:
+                prependTo: document.body.childNodes[0],
+            };
+
             //validate parsley form
             const form = document.getElementById("form");
             const validator = $(form).parsley();
@@ -138,6 +169,10 @@
                         .errorMessage); // Set the error message from the response
                     indicatorNone();
 
+                    var toasty = new Toasty(optionToast);
+                        toasty.configure(optionToast);
+                        toasty.error(remoteValidationResultEmail
+                        .errorMessage);
                     return;
                 } else {
                     accessErrorEmail.removeClass('invalid-feedback');
@@ -147,6 +182,7 @@
 
                 if (passwordField !== '') {
                     if (!validatePasswordConfirmation()) {
+                    indicatorNone();
                         return;
                     }
                 } 
@@ -160,6 +196,9 @@
                     accessErrorPassword.text('Value is required'); // Set the error message from the response
                     indicatorNone();
 
+                    var toasty = new Toasty(optionToast);
+                        toasty.configure(optionToast);
+                        toasty.error('Value is required');
                     return
                 }else{
                     accessErrorPassword.removeClass('invalid-feedback');
@@ -184,6 +223,9 @@
                             validationErrors.push(attrName + ': ' + errorMessage);
                         }
                     });
+                    var toasty = new Toasty(optionToast);
+                    toasty.configure(optionToast);
+                    toasty.error(validationErrors.join('\n'));
                     console.log("Validation errors:", validationErrors.join('\n'));
                 }
             });
@@ -224,14 +266,12 @@
                 if (passwordField.val().length < 8) {
                     passwordField.addClass('is-invalid');
                     accessErrorPassword.text('Password harus memiliki setidaknya 8 karakter');
-                    indicatorNone();
                     return false;
                 } else if (passwordField.val() !== konfirmasiPasswordField.val()) {
                     passwordField.removeClass('is-invalid');
                     accessErrorPassword.text('');
                     konfirmasiPasswordField.addClass('is-invalid');
                     accessErrorKonfirmasiPassword.text('Konfirmasi Password harus sama dengan Password');
-                    indicatorNone();
                     return false;
                 } else {
                     passwordField.removeClass('is-invalid');

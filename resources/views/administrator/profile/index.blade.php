@@ -213,22 +213,44 @@
 
 @push('js')
 <script src="{{ asset_administrator('assets/plugins/parsleyjs/parsley.min.js') }}"></script>
-    <script type="text/javascript">
+<script src="{{ asset_administrator('assets/plugins/parsleyjs/page/parsley.js') }}"></script>
+<script type="text/javascript">
         $(document).ready(function() {
 
+            var optionToast = {
+                classname: "toast",
+                transition: "fade",
+                insertBefore: true,
+                duration: 4000,
+                enableSounds: true,
+                autoClose: true,
+                progressBar: true,
+                sounds: {
+                    info: toastMessages.path + "/sounds/info/1.mp3",
+                    // path to sound for successfull message:
+                    success: toastMessages.path + "/sounds/success/1.mp3",
+                    // path to sound for warn message:
+                    warning: toastMessages.path + "/sounds/warning/1.mp3",
+                    // path to sound for error message:
+                    error: toastMessages.path + "/sounds/error/1.mp3",
+                },
 
+                onShow: function(type) {
+                    console.log("a toast " + type + " message is shown!");
+                },
+                onHide: function(type) {
+                    console.log("the toast " + type + " message is hidden!");
+                },
+
+                // the placement where prepend the toast container:
+                prependTo: document.body.childNodes[0],
+            };
 
             //validate parsley form
             const form = document.getElementById("form");
             const validator = $(form).parsley();
 
             const submitButton = document.getElementById("formSubmit");
-
-            form.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                }
-            });
 
             submitButton.addEventListener("click", async function(e) {
                 e.preventDefault();
@@ -248,6 +270,10 @@
                         .errorMessage); // Set the error message from the response
                         indicatorNone();
 
+                        var toasty = new Toasty(optionToast);
+                        toasty.configure(optionToast);
+                        toasty.error(remoteValidationResult
+                        .errorMessage);
                     return;
                 } else {
                     accessErrorEmail.removeClass('invalid-feedback');
@@ -276,6 +302,9 @@
                             validationErrors.push(attrName + ': ' + errorMessage);
                         }
                     });
+                    var toasty = new Toasty(optionToast);
+                    toasty.configure(optionToast);
+                    toasty.error(validationErrors.join('\n'));
                     console.log("Validation errors:", validationErrors.join('\n'));
                 }
             });

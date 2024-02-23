@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\LogSystemController;
 use App\Http\Controllers\admin\StatisticController;
 use App\Http\Controllers\admin\UserGroupController;
+use App\Http\Controllers\admin\KategoriSetController;
 use App\Http\Controllers\admin\SettingSmtpController;
 
 /*
@@ -124,5 +125,15 @@ Route::prefix('admin')->group(function () {
         Route::get('statistic', [StatisticController::class, 'index'])->name('admin.statistic');
         Route::get('statistic/getData', [StatisticController::class, 'getData'])->name('admin.statistic.getData');
         Route::get('statistic/getDetail{id}', [StatisticController::class, 'getDetail'])->name('admin.statistic.getDetail');
+
+        //KetegoriSet
+        Route::get('kategori-set', [KategoriSetController::class, 'index'])->name('admin.kategori_set');
+        Route::get('kategori-set/add', [KategoriSetController::class, 'add'])->name('admin.kategori_set.add');
+        Route::get('kategori-set/getData', [KategoriSetController::class, 'getData'])->name('admin.kategori_set.getData');
+        Route::post('kategori-set/save', [KategoriSetController::class, 'save'])->name('admin.kategori_set.save');
+        Route::get('kategori-set/edit/{id}', [KategoriSetController::class, 'edit'])->name('admin.kategori_set.edit');
+        Route::put('kategori-set/update', [KategoriSetController::class, 'update'])->name('admin.kategori_set.update');
+        Route::delete('kategori-set/delete', [KategoriSetController::class, 'delete'])->name('admin.kategori_set.delete');
+        Route::post('kategori-set/checkNama',[KategoriSetController::class, 'checkNama'])->name('admin.kategori_set.checkNama');
     });
 });

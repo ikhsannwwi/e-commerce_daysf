@@ -24,6 +24,11 @@ function template_administrator($url)
 	return asset('templateSneat/' . $url);
 }
 
+function template_frontpage($url)
+{
+	return asset('templateFrontpage/public/' . $url);
+}
+
 function upload_path($type = '', $file = '')
 {
 	switch ($type) {

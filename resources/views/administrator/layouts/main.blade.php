@@ -61,6 +61,7 @@
     <link rel="stylesheet" href="{{asset_administrator('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
     <link rel="stylesheet" href="{{asset_administrator('assets/plugins/calendarify/dist/calendarify.min.css')}}">
     <link rel="stylesheet" href="{{asset_administrator('assets/plugins//toasty/toasty.min.css')}}">
+    <link rel="stylesheet" href="{{ asset_administrator('assets/plugins/parsleyjs/parsley.min.css') }}">
 
     @stack('css')
 
