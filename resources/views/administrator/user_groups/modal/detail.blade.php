@@ -25,7 +25,7 @@
 
         var modalBody = $('#detailUserGroupsBody');
         modalBody.html('<div id="loadingSpinner" style="display: none;">' +
-            '<i class="fas fa-spinner fa-spin"></i> Sedang memuat...' +
+            '<i class="fas fa-spinner fa-spin"></i> Sedang memuat...' +                
             '</div>');
         var loadingSpinner = $('#loadingSpinner');
 
@@ -40,65 +40,69 @@
                 var permission = response.permission[data.id];
 
                 var permissionTableHTML =
-                    '<table id="table-permissions" class="compact table table-bordered" width="100%">' +
-                    '<thead>' +
-                    '<tr>' +
-                    '<th style="width:50px">No</th>' +
-                    '<th>Module</th>';
+                        '<table id="table-permissions" class="compact table table-bordered" width="100%">' +
+                        '<thead>' +
+                        '<tr>' +
+                        '<th style="width:50px;">No</th>' +
+                        '<th>Module</th>'; // No additional column for description
 
-                var hasAccessColumn = false; // To track if there is at least one module with access
+                    var hasAccessColumn = false; // To track if there is at least one module with access
 
-                for (var i = 0; i < modules.length; i++) {
-                    var module = modules[i];
-                    var modulePermissions = permission[module.identifiers];
-                    var hasAccess = false;
-
-                    for (var key in modulePermissions) {
-                        if (modulePermissions[key] === '1') {
-                            hasAccess = true;
-                            hasAccessColumn = true;
-                            break;
-                        }
-                    }
-
-                    if (hasAccess) {
-                        permissionTableHTML += '<th>Access</th>';
-                        break; // Only need one column
-                    }
-                }
-
-                permissionTableHTML += '</tr></thead><tbody>';
-
-                for (var i = 0; i < modules.length; i++) {
-                    var module = modules[i];
-                    var modulePermissions = permission[module.identifiers];
-                    var hasAccess = false;
-
-                    for (var key in modulePermissions) {
-                        if (modulePermissions[key] === '1') {
-                            hasAccess = true;
-                            break;
-                        }
-                    }
-
-                    if (hasAccess) {
-                        permissionTableHTML += '<tr class="permission-list">' +
-                            '<td>' + (i + 1) + '</td>' +
-                            '<td>' + module.name + '</td>';
-
-                        permissionTableHTML += '<td>';
+                    for (var i = 0; i < modules.length; i++) {
+                        var module = modules[i];
+                        var modulePermissions = permission[module.identifiers];
+                        var hasAccess = false;
 
                         for (var key in modulePermissions) {
                             if (modulePermissions[key] === '1') {
-                                permissionTableHTML += key + '<br>';
+                                hasAccess = true;
+                                hasAccessColumn = true;
+                                break;
                             }
                         }
 
-                        permissionTableHTML += '</td></tr>';
+                        if (hasAccess) {
+                            permissionTableHTML += '<th>Access</th>';
+                            break; // Only need one column
+                        }
                     }
-                }
 
-                permissionTableHTML += '</tbody></table>';
+                    permissionTableHTML += '</tr></thead><tbody>';
+
+                    for (var i = 0; i < modules.length; i++) {
+                        var module = modules[i];
+                        var modulePermissions = permission[module.identifiers];
+                        var hasAccess = false;
+
+                        for (var key in modulePermissions) {
+                            if (modulePermissions[key] === '1') {
+                                hasAccess = true;
+                                break;
+                            }
+                        }
+
+                        if (hasAccess) {
+                            permissionTableHTML += '<tr class="permission-list">' +
+                                '<td>' + (i + 1) + '</td>' +
+                                '<td>' + module.name + '</td>';
+
+                            permissionTableHTML += '<td>';
+
+                            let no = 1
+                            for (var key in modulePermissions) {
+                                if (modulePermissions[key] === '1') {
+                                    permissionTableHTML +=
+                                        '<div style="margin-top: 3px;padding: 5px; margin-bottom: 5px;">' + no + '. ' +
+                                        key + '</div>';
+                                }
+                                no++
+                            }
+
+                            permissionTableHTML += '</td></tr>';
+                        }
+                    }
+
+                    permissionTableHTML += '</tbody></table>';
 
                 modalBody.html(
                     '<p>ID: ' + data.id + '</p>' +

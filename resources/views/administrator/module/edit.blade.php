@@ -210,6 +210,7 @@
                                             </button>
                                             <button type="reset"
                                                 class="btn btn-secondary me-1 mb-1">Reset</button>
+                                            <a href="{{ route('admin.module') }}" class="btn btn-danger me-1 mb-1">Cancel</a>
                                         </div>
                                     </div>
                             </form>
@@ -369,31 +370,31 @@
                     console.log("Validation errors:", validationErrors.join('\n'));
                 }
             });
+    
+            function indicatorSubmit() {
+                submitButton.querySelector('.indicator-label').style.display =
+                    'none';
+                submitButton.querySelector('.indicator-progress').style.display =
+                    'inline-block';
+            }
+    
+            function indicatorNone() {
+                submitButton.querySelector('.indicator-label').style.display =
+                    'inline-block';
+                submitButton.querySelector('.indicator-progress').style.display =
+                    'none';
+                submitButton.disabled = false;
+            }
+    
+            function indicatorBlock() {
+                // Disable the submit button and show the "Please wait..." message
+                submitButton.disabled = true;
+                submitButton.querySelector('.indicator-label').style.display = 'none';
+                submitButton.querySelector('.indicator-progress').style.display =
+                    'inline-block';
+            }
 
         });
-
-        function indicatorSubmit() {
-            submitButton.querySelector('.indicator-label').style.display =
-                'none';
-            submitButton.querySelector('.indicator-progress').style.display =
-                'inline-block';
-        }
-
-        function indicatorNone() {
-            submitButton.querySelector('.indicator-label').style.display =
-                'inline-block';
-            submitButton.querySelector('.indicator-progress').style.display =
-                'none';
-            submitButton.disabled = false;
-        }
-
-        function indicatorBlock() {
-            // Disable the submit button and show the "Please wait..." message
-            submitButton.disabled = true;
-            submitButton.querySelector('.indicator-label').style.display = 'none';
-            submitButton.querySelector('.indicator-progress').style.display =
-                'inline-block';
-        }
 
         function resetData() {
 

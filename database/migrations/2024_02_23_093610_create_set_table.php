@@ -17,12 +17,12 @@ class CreateSetTable extends Migration
             $table->id();
             $table->foreignId('kategori_id');
             $table->string('nama');
-            $table->decimal('total_harga',32, 2);
+            $table->decimal('total_harga');
             $table->text('deskripsi');
             $table->string('foto');
             $table->timestamps();
-            $table->foreignId('created_by')->nullable();
-            $table->foreignId('updated_by')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
         });
     }
 

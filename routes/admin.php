@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\SetController;
 use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\viewController;
@@ -110,6 +111,8 @@ Route::prefix('admin')->group(function () {
         Route::put('settings/admin/general/update', [SettingController::class, 'admin_general_update'])->name('admin.settings.admin.general.update');
         Route::get('settings/admin/smtp', [SettingController::class, 'admin_smtp'])->name('admin.settings.admin.smtp');
         Route::put('settings/admin/smtp/update', [SettingController::class, 'admin_smtp_update'])->name('admin.settings.admin.smtp.update');
+        Route::get('settings/frontpage/api', [SettingController::class, 'frontpage_api'])->name('admin.settings.frontpage.api');
+        Route::put('settings/frontpage/api/update', [SettingController::class, 'frontpage_api_update'])->name('admin.settings.frontpage.api.update');
 
         //Modul dan Modul Akses
         Route::get('module', [ModuleController::class, 'index'])->name('admin.module');
@@ -135,5 +138,16 @@ Route::prefix('admin')->group(function () {
         Route::put('kategori-set/update', [KategoriSetController::class, 'update'])->name('admin.kategori_set.update');
         Route::delete('kategori-set/delete', [KategoriSetController::class, 'delete'])->name('admin.kategori_set.delete');
         Route::post('kategori-set/checkNama',[KategoriSetController::class, 'checkNama'])->name('admin.kategori_set.checkNama');
+
+        //Set
+        Route::get('set', [SetController::class, 'index'])->name('admin.set');
+        Route::get('set/add', [SetController::class, 'add'])->name('admin.set.add');
+        Route::get('set/getData', [SetController::class, 'getData'])->name('admin.set.getData');
+        Route::post('set/save', [SetController::class, 'save'])->name('admin.set.save');
+        Route::get('set/edit/{id}', [SetController::class, 'edit'])->name('admin.set.edit');
+        Route::put('set/update', [SetController::class, 'update'])->name('admin.set.update');
+        Route::delete('set/delete', [SetController::class, 'delete'])->name('admin.set.delete');
+        Route::get('set/getDetail-{id}', [SetController::class, 'getDetail'])->name('admin.set.getDetail');
+        Route::get('set/getKategori', [SetController::class, 'getKategori'])->name('admin.set.getKategori');
     });
 });

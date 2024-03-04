@@ -254,4 +254,61 @@ class SettingController extends Controller
         return redirect(route('admin.settings.admin.smtp'))->with(['success' => 'Data berhasil di update.']);
 
     }
+    
+    public function frontpage_api()
+    {
+        //Check permission
+        if (!isAllowed(static::$module, "setting")) {
+            abort(403);
+        }
+        $settings = Setting::get()->toArray();
+        
+        $settings = array_column($settings, 'value', 'name');
+
+        // Ambil pengaturan dari database dan tampilkan di halaman
+        return view('administrator.settings.frontpage.configure_api', compact('settings'));
+    }
+
+    public function frontpage_api_update(Request $request)
+    {
+        // return $request;
+        //Check permission
+        if (!isAllowed(static::$module, "setting")) {
+            abort(403);
+        }
+
+        $settings = Setting::get()->toArray();
+        $settings = array_column($settings, 'value', 'name');
+
+        
+        $data_settings = [];
+        $data_settings["frontpage_api"] = $request->api;
+        
+
+        $logs = []; // Buat array kosong untuk menyimpan log
+
+        foreach ($data_settings as $key => $value) {
+            $data = [];
+
+            if (array_key_exists($key, $settings)) {
+                $data["value"] = $value;
+                $set = Setting::where('name', $key)->first();
+                $set->update($data);
+
+                $logs[] = ['---'.$key.'---' => ['Data Sebelumnya' => ['value' => $settings[$key]], 'Data terbaru' => ['value' => $value]]];
+            } else {
+                $data["name"] = $key;
+                $data["value"] = $value;
+                $set = Setting::create($data);
+
+                $logs[] = $set;
+            }
+        }
+
+        //Write log
+        createLog(static::$module, __FUNCTION__, 0,$logs);
+
+        return redirect(route('admin.settings.frontpage.api'))->with(['success' => 'Data berhasil di update.']);
+
+    }
 }

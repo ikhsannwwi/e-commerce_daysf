@@ -62,6 +62,7 @@
     <link rel="stylesheet" href="{{asset_administrator('assets/plugins/calendarify/dist/calendarify.min.css')}}">
     <link rel="stylesheet" href="{{asset_administrator('assets/plugins//toasty/toasty.min.css')}}">
     <link rel="stylesheet" href="{{ asset_administrator('assets/plugins/parsleyjs/parsley.min.css') }}">
+    <link rel="stylesheet" href="{{ asset_administrator('assets/plugins/nice-select2/dist/css/nice-select2.css') }}">
 
     @stack('css')
 
@@ -150,6 +151,7 @@
     <!-- Main JS -->
     <script src="{{template_administrator('assets/js/main.js')}}"></script>
     
+    <script src="{{ asset_administrator('assets/plugins/nice-select2/dist/js/nice-select2.js') }}"></script>
     <script src="{{ asset_administrator('assets/plugins/sweetalert2/toast.js') }}"></script>
     <script src="{{ asset_administrator('assets/plugins/sweetalert2/page/toast.js') }}"></script>
     <script>

@@ -39,5 +39,16 @@ class DataServiceProvider extends ServiceProvider
             $settings = array_column($settings, 'value', 'name');
             $view->with('settings', $settings);
         });
+
+        view()->composer([
+            'frontpage.home.part.by_category',
+            'frontpage.home.part.store',
+            'frontpage.home.part.best_deals'
+        ], function ($view) {
+            $settings = Setting::get()->toArray();
+        
+            $settings = array_column($settings, 'value', 'name');
+            $view->with('settings', $settings);
+        });
     }
 }

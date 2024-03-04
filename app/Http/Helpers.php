@@ -38,6 +38,9 @@ function upload_path($type = '', $file = '')
 		case 'profile':
 			$target_folder = 'profile';
 			break;
+		case 'set':
+			$target_folder = 'set';
+			break;
 		default:
 			$target_folder = '';
 			break;
@@ -59,6 +62,9 @@ function img_src($image = '', $img_type = '')
 				break;
 			case 'profile':
 				$folder = '/profile/';
+				break;
+			case 'set':
+				$folder = '/set/';
 				break;
 			default:
 				$folder = '/';

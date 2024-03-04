@@ -17,13 +17,12 @@ class CreateSetDetailTable extends Migration
             $table->id();
             $table->foreignId('set_id');
             $table->string('nama');
-            $table->decimal('harga', 32, 2);
-            $table->string('foto');
+            $table->decimal('harga');
+            $table->string('foto')->nullable();
             $table->text('link');
-            $table->text('deskripsi');
             $table->timestamps();
-            $table->foreignId('created_by')->nullable();
-            $table->foreignId('updated_by')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
         });
     }
 
