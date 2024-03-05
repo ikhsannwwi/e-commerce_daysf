@@ -40,6 +40,13 @@
             </ul>
         </li>
 
+        <li class="menu-item {{ Route::is('admin.set*') && !Route::is('admin.setting*') ? 'active' : '' }}">
+            <a href="{{ route('admin.set') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Set">Set</div>
+            </a>
+        </li>
+
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
         </li>

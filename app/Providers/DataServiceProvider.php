@@ -43,6 +43,7 @@ class DataServiceProvider extends ServiceProvider
         view()->composer([
             'frontpage.home.part.by_category',
             'frontpage.home.part.store',
+            'frontpage.home.part.checkout_new_arrivals',
             'frontpage.home.part.best_deals'
         ], function ($view) {
             $settings = Setting::get()->toArray();

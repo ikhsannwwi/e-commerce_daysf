@@ -22,6 +22,9 @@
         $(document).ready(function() {
             $.ajax({
                 url: `{{ array_key_exists('frontpage_api', $settings) ? $settings['frontpage_api'] : '' }}promo?notShow=%5B""%5D`,
+                headers: {
+                    'Authorization': 'daysf_store'
+                },
                 method: 'GET',
                 success: function(response) {
                     var data = response.data;

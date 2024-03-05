@@ -17,3 +17,4 @@ use App\Http\Controllers\frontpage\HomeController;
 |
 */
 Route::get('/', [HomeController::class, 'index'])->name('web.index');
+Route::middleware('token')->get('/getSet', [HomeController::class, 'getSet'])->name('web.getSet');

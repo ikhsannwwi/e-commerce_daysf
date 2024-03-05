@@ -31,6 +31,9 @@
         $(document).ready(function() {
             $.ajax({
                 url: `{{ array_key_exists('frontpage_api', $settings) ? $settings['frontpage_api'] : '' }}toko`,
+                headers: {
+                    'Authorization': 'daysf_store'
+                },
                 method: 'GET',
                 success: function(response) {
                     var datas = response.data;

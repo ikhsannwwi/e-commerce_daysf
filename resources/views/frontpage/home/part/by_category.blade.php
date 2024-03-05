@@ -22,6 +22,9 @@
         $(document).ready(function() {
             $.ajax({
                 url: `{{ array_key_exists('frontpage_api', $settings) ? $settings['frontpage_api'] : '' }}kategori?notShow=%5B"celana"%5D`,
+                headers: {
+                    'Authorization': 'daysf_store'
+                },
                 method: 'GET',
                 success: function(response) {
                     var data = response.data;
@@ -49,7 +52,7 @@
                             sliderContent += `<li class="splide__slide">
                                     <div class="card card-span h-100 text-white"><img
                                             class="img-fluid h-80"
-                                            src="${(produk.image.length !== 0) ? '{{ array_key_exists('frontpage_api', $settings) ? str_replace("/api", "",$settings['frontpage_api']) : '' }}administrator/assets/media/produk/'+ produk.image[0].image : "{{ template_frontpage('assets/img/gallery/handbag.png') }}"}" // Update this to the correct property of your product
+                                            src="${(produk.image.length !== 0) ? '{{ array_key_exists('frontpage_api', $settings) ? str_replace("/api", "",$settings['frontpage_api']) : '' }}administrator/assets/media/produk/'+ produk.image[0].image : "http://placehold.it/500x500?text=Not Found"}" // Update this to the correct property of your product
                                             alt="${produk.nama}" />
                                         <div class="card-img-overlay ps-0"> </div>
                                         <div class="card-body ps-0 bg-200">
