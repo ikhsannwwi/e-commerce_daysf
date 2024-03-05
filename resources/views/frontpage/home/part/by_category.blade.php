@@ -5,6 +5,7 @@
                 <h5 class="fw-bold fs-3 fs-lg-5 lh-sm mb-3">Shop By Category</h5>
             </div>
             <div class="col-12">
+                <div id="divLoadDataByCategory" class="d-flex justify-content-center"></div>
                 <nav>
                     <div class="tab-content" id="nav-tabContent">
 
@@ -20,8 +21,15 @@
 @push('js')
     <script>
         $(document).ready(function() {
+            var divLoadData = $('#divLoadDataByCategory');
+            divLoadData.html('<div id="loadingSpinnerByCategory" style="display: none;">' +
+                '<i class="fas fa-spinner fa-spin"></i> Sedang memuat...' +
+                '</div>');
+            var loadingSpinnerByCategory = $('#loadingSpinnerByCategory');
+
+            loadingSpinnerByCategory.show(); // Tampilkan elemen animasi
             $.ajax({
-                url: `{{ array_key_exists('frontpage_api', $settings) ? $settings['frontpage_api'] : '' }}kategori?notShow=%5B"celana"%5D`,
+                url: `{{ array_key_exists('frontpage_api', $settings) ? $settings['frontpage_api'] : '' }}kategori`,
                 headers: {
                     'Authorization': 'daysf_store'
                 },
@@ -52,7 +60,7 @@
                             sliderContent += `<li class="splide__slide">
                                     <div class="card card-span h-100 text-white"><img
                                             class="img-fluid h-80"
-                                            src="${(produk.image.length !== 0) ? '{{ array_key_exists('frontpage_api', $settings) ? str_replace("/api", "",$settings['frontpage_api']) : '' }}administrator/assets/media/produk/'+ produk.image[0].image : "http://placehold.it/500x500?text=Not Found"}" // Update this to the correct property of your product
+                                            src="${(produk.image.length !== 0) ? '{{ array_key_exists('frontpage_api', $settings) ? str_replace('/api', '', $settings['frontpage_api']) : '' }}administrator/assets/media/produk/'+ produk.image[0].image : "http://placehold.it/500x500?text=Not Found"}" // Update this to the correct property of your product
                                             alt="${produk.nama}" />
                                         <div class="card-img-overlay ps-0"> </div>
                                         <div class="card-body ps-0 bg-200">
@@ -63,9 +71,9 @@
                                         </div><a class="stretched-link" href="#"></a>
                                     </div>
                                 </li>`;
-                                        });
+                        });
 
-                                        content += `<div class="tab-pane fade ${firstItem ? 'show active' : ''}" id="category-${item.id}" role="tabpanel"
+                        content += `<div class="tab-pane fade ${firstItem ? 'show active' : ''}" id="category-${item.id}" role="tabpanel"
                                 aria-labelledby="category-${item.id}-tab">
                                 <section class="splide" id="splide-${item.id}" style="padding: 1rem!important;"
                                     aria-label="Splide Basic HTML Example">
@@ -95,13 +103,16 @@
                         });
                         splideInstance.mount();
                     });
+                    loadingSpinnerByCategory.hide(); // Sembunyikan elemen animasi setelah data dimuat
                 },
                 error: function() {
-                    $('#navByCategory').html(`<div class="col-12 d-flex justify-content-center mt-2">Failed load data!</div>`);
+                    loadingSpinnerByCategory.append(
+                        `<div class="col-12 mt-2">Failed load data!</div>`
+                    );
                 }
             });
 
-            
+
             function formatRupiah(amount) {
                 // Use Number.prototype.toLocaleString() to format the number as currency
                 return 'Rp ' + Number(amount).toLocaleString('id-ID');

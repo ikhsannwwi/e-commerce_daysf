@@ -5,6 +5,7 @@
                 <h5 class="fw-bold fs-3 fs-lg-5 lh-sm mb-3">Promo</h5>
             </div>
             <div class="col-12">
+                <div id="divLoadDataPromo" class="d-flex justify-content-center"></div>
                 <nav>
                     <div class="tab-content" id="promo-nav_tabContent">
 
@@ -20,6 +21,13 @@
 @push('js')
     <script>
         $(document).ready(function() {
+            var divLoadData = $('#divLoadDataPromo');
+            divLoadData.html('<div id="loadingSpinnerPromo" style="display: none;">' +
+                '<i class="fas fa-spinner fa-spin"></i> Sedang memuat...' +
+                '</div>');
+            var loadingSpinnerPromo = $('#loadingSpinnerPromo');
+
+            loadingSpinnerPromo.show(); // Tampilkan elemen animasi
             $.ajax({
                 url: `{{ array_key_exists('frontpage_api', $settings) ? $settings['frontpage_api'] : '' }}promo?notShow=%5B""%5D`,
                 headers: {
@@ -52,7 +60,7 @@
                             sliderContent += `<li class="splide__slide">
                                     <div class="card card-span h-100 text-white"><img
                                             class="img-fluid h-80"
-                                            src="${(detail.produk.image.length !== 0) ? '{{ array_key_exists('frontpage_api', $settings) ? str_replace("/api", "",$settings['frontpage_api']) : '' }}administrator/assets/media/produk/'+ detail.produk.image[0].image : "{{ template_frontpage('assets/img/gallery/handbag.png') }}"}" // Update this to the correct property of your product
+                                            src="${(detail.produk.image.length !== 0) ? '{{ array_key_exists('frontpage_api', $settings) ? str_replace("/api", "",$settings['frontpage_api']) : '' }}administrator/assets/media/produk/'+ detail.produk.image[0].image : "http://placehold.it/500x500?text=Not Found"}" // Update this to the correct property of your product
                                             alt="${detail.produk.nama}" />
                                         <div class="card-img-overlay ps-0"> </div>
                                         <div class="card-body ps-0 bg-200">
@@ -99,9 +107,12 @@
                         });
                         splidePromo.mount();
                     });
+                    loadingSpinnerPromo.hide(); // Sembunyikan elemen animasi setelah data dimuat
                 },
                 error: function() {
-                    $('#navByPromo').html(`<div class="col-12 d-flex justify-content-center mt-2">Failed load data!</div>`);
+                    loadingSpinnerPromo.append(
+                        `<div class="col-12 mt-2">Failed load data!</div>`
+                    );
                 }
             });
 
