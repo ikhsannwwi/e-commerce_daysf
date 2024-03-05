@@ -672,13 +672,17 @@
 
                         const imageType = /^image\//;
 
+                        $(another).find('.triggerCrop-item').remove()
+                        $(another).find('.data_image-item').empty()
+
                         if (!imageType.test(file.type)) {
                             // Handle non-image files or do nothing
                             return;
                         }
 
-                        $(another).find('.triggerCrop-item').remove()
-                        $(another).find('.data_image-item').empty()
+                        if (file === null || file.length === 0) {
+                            return;
+                        }
 
                         // Button Crop
                         const cropButton = document.createElement("a");
@@ -729,6 +733,30 @@
                         $(another).find('.data_image-item').append(yItem);
                         $(another).find('.data_image-item').append(ratio1);
                         $(another).find('.data_image-item').append(ratio2);
+                    });
+
+                    $(another).find('.removeData').off().on('click', function() {
+                        const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn btn-success mx-4',
+                                cancelButton: 'btn btn-danger'
+                            },
+                            buttonsStyling: false
+                        });
+
+                        swalWithBootstrapButtons.fire({
+                            title: 'Apakah anda yakin ingin menghapus baris ini',
+                            icon: 'warning',
+                            buttonsStyling: false,
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Saya yakin!',
+                            cancelButtonText: 'Tidak, Batalkan!',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $(another).remove()
+                            }
+                        });
                     });
 
                     index++;

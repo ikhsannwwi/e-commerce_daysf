@@ -51,10 +51,10 @@
         $('#ModalCrop').off().on('show.bs.modal', function(event) {
             var triggerCrop = $(event.relatedTarget);
 
-            if (triggerCrop.parent().find('.inputImage-item').val() === '') {
-                triggerCrop.parent().find('.triggerCrop-item').remove()
-                triggerCrop.parent().find('.data_image-item').empty()
-            }
+            // if (triggerCrop.parent().find('.inputImage-item').val() === '') {
+            //     triggerCrop.parent().find('.triggerCrop-item').remove()
+            //     triggerCrop.parent().find('.data_image-item').empty()
+            // }
 
             // Get the Cropper instance
             var cropper = $('#image').data('cropper');
@@ -71,12 +71,12 @@
             var image = $('#image')[0];
             image.src = srcImage;
 
-            console.log(triggerCrop.parent().find('.data_image-item').find('.ratio1-item').val()); // Log the entire dataset
+            console.log(triggerCrop.parent().find('.inputImage-item').val()); // Log the entire dataset
 
             var data = $('#data');
             var button = $('#button');
             var result = $('#result');
-            var minCroppedWidth = 600;
+            var minCroppedWidth = triggerCrop.parent().find('.data_image-item').find('.ratio1-item').val() === 2 ? 400 :600;
             var minCroppedHeight = 600;
             var aspectRatio = parseInt(triggerCrop.parent().find('.data_image-item').find('.ratio1-item').val()) / parseInt(triggerCrop.parent().find('.data_image-item').find('.ratio2-item').val());
 

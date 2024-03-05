@@ -147,6 +147,8 @@ Route::prefix('admin')->group(function () {
         Route::get('set/edit/{id}', [SetController::class, 'edit'])->name('admin.set.edit');
         Route::put('set/update', [SetController::class, 'update'])->name('admin.set.update');
         Route::delete('set/delete', [SetController::class, 'delete'])->name('admin.set.delete');
+        Route::delete('set/deleteDetail', [SetController::class, 'deleteDetail'])->name('admin.set.deleteDetail');
+        Route::delete('set/deleteImage', [SetController::class, 'deleteImage'])->name('admin.set.deleteImage');
         Route::get('set/getDetail-{id}', [SetController::class, 'getDetail'])->name('admin.set.getDetail');
         Route::get('set/getKategori', [SetController::class, 'getKategori'])->name('admin.set.getKategori');
     });

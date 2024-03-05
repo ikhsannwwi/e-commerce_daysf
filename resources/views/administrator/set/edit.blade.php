@@ -80,33 +80,41 @@
                                                         <tbody class="fileinput-preview-gambar">
                                                             @foreach ($data->image as $key => $row)
                                                                 <tr>
-                                                                    <td class="text-center">{{$key + 1}}</td>
+                                                                    <td class="text-center">{{ $key + 1 }}</td>
                                                                     <td class="text-center">
                                                                         <div class="img-thumbnail-container"><img
                                                                                 class="img-thumbnail" width="200"
-                                                                                src="{{img_src($row->image, 'set')}}">
+                                                                                src="{{ img_src($row->image, 'set') }}">
                                                                         </div>
                                                                     </td>
                                                                     <td class="text-center"><a href="#" title="Delete"
-                                                                            class="btn btn-danger btn-sm deleteImg mx-1"><i
+                                                                            data-ix="{{ $row->id }}"
+                                                                            class="btn btn-danger btn-sm deleteImg_data mx-1 {{ count($data->image) > 1 ? '' : 'd-none' }}"><i
                                                                                 class="fa fa-trash"
                                                                                 aria-hidden="true"></i></a><a href="#"
                                                                             title="Crop"
                                                                             class="btn btn-outline-secondary btn-sm triggerCrop mx-1"
                                                                             data-bs-toggle="modal"
                                                                             data-bs-target="#ModalCrop"
-                                                                            data-src="{{img_src($row->image, 'set')}}"><i
+                                                                            data-src="{{ img_src($row->image, 'set') }}"><i
                                                                                 class="fa fa-crop"
                                                                                 aria-hidden="true"></i></a>
                                                                         <div class="data_image-item">
+                                                                            <input type="hidden" class="img_id-item"
+                                                                                value="{{ $row->id }}"
+                                                                                name="dataImage[{{ $key }}][img_id-item]">
                                                                             <input type="hidden" class="width-item"
-                                                                                name="dataImage[{{$key}}][width]">
+                                                                                value="{{ $row->data_image_width }}"
+                                                                                name="dataImage[{{ $key }}][width]">
                                                                             <input type="hidden" class="height-item"
-                                                                                name="dataImage[{{$key}}][height]">
+                                                                                value="{{ $row->data_image_height }}"
+                                                                                name="dataImage[{{ $key }}][height]">
                                                                             <input type="hidden" class="x-item"
-                                                                                name="dataImage[{{$key}}][x]">
+                                                                                value=""
+                                                                                name="dataImage[{{ $key }}][x]">
                                                                             <input type="hidden" class="y-item"
-                                                                                name="dataImage[{{$key}}][y]">
+                                                                                value=""
+                                                                                name="dataImage[{{ $key }}][y]">
                                                                             <input type="hidden" value="2"
                                                                                 class="ratio1-item">
                                                                             <input type="hidden" value="3"
@@ -121,8 +129,8 @@
                                                         <label for="inputGambar" class="btn btn-light btn-file">
                                                             <span class="fileinput-new">Select image</span>
                                                             <input type="file" class="d-none" id="inputGambar"
-                                                                data-parsley-required="true" name="img[]"
-                                                                accept="image/*" multiple>
+                                                                data-parsley-required="{{ count($data->image) !== 0 ? 'false' : 'true' }}"
+                                                                name="img[]" accept="image/*" multiple>
                                                             <!-- Tambahkan atribut "multiple" di sini -->
                                                         </label>
                                                     </div>
@@ -206,16 +214,46 @@
                                                                                     image</span>
                                                                                 <input type="file"
                                                                                     class="d-none inputImage-item"id="inputImage_{{ $key }}"
-                                                                                    data-parsley-required="true"
+                                                                                    data-parsley-required="{{ !empty($row->foto) ? 'false' : 'true' }}"
                                                                                     name="detail[{{ $key }}][image]"
                                                                                     accept="image/*" multiple>
+                                                                                <a href="#"
+                                                                                    class="btn btn-outline-secondary btn-sm triggerCrop-item mx-1"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#ModalCrop"
+                                                                                    data-src="{{ img_src($row->foto, 'set') }}"><i
+                                                                                        class="fa fa-eye"></i></a>
+                                                                                <div class="data_image-item">
+                                                                                    <input type="hidden"
+                                                                                        class="width-item"
+                                                                                        value="{{ $row->data_image_width }}"
+                                                                                        name="detail[{{ $key }}][dataImage_width]">
+                                                                                    <input type="hidden"
+                                                                                        class="height-item"
+                                                                                        value="{{ $row->data_image_height }}"
+                                                                                        name="detail[{{ $key }}][dataImage_height]">
+                                                                                    <input type="hidden" class="x-item"
+                                                                                        value=""
+                                                                                        name="detail[{{ $key }}][dataImage_x]">
+                                                                                    <input type="hidden" class="y-item"
+                                                                                        value=""
+                                                                                        name="detail[{{ $key }}][dataImage_y]">
+                                                                                    <input type="hidden"
+                                                                                        class="ratio1-item"
+                                                                                        value="1">
+                                                                                    <input type="hidden"
+                                                                                        class="ratio2-item"
+                                                                                        value="1">
+                                                                                </div>
                                                                             </label>
-                                                                            <div class="data_image-item"></div>
                                                                         </div>
                                                                     </td>
-                                                                    <td class="text-center"><a href="javascript:void(0)"
+                                                                    <td class="text-center">
+                                                                        <a href="javascript:void(0)"
+                                                                            style="display: {{ count($data->detail) > 1 ? 'block' : 'none' }}"
                                                                             class="btn btn-outline-danger removeData"><i
-                                                                                class='fa fa-times'></a></td>
+                                                                                class='fa fa-times'></i></a>
+                                                                    </td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>
@@ -304,6 +342,35 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
+        var optionToast = {
+            classname: "toast",
+            transition: "fade",
+            insertBefore: true,
+            duration: 4000,
+            enableSounds: true,
+            autoClose: true,
+            progressBar: true,
+            sounds: {
+                info: toastMessages.path + "/sounds/info/1.mp3",
+                // path to sound for successfull message:
+                success: toastMessages.path + "/sounds/success/1.mp3",
+                // path to sound for warn message:
+                warning: toastMessages.path + "/sounds/warning/1.mp3",
+                // path to sound for error message:
+                error: toastMessages.path + "/sounds/error/1.mp3",
+            },
+
+            onShow: function(type) {
+                console.log("a toast " + type + " message is shown!");
+            },
+            onHide: function(type) {
+                console.log("the toast " + type + " message is hidden!");
+            },
+
+            // the placement where prepend the toast container:
+            prependTo: document.body.childNodes[0],
+        };
+
         // Fungsi untuk menangani perubahan pada file input
         function handleFileInputChange() {
             const newInput = this; // 'this' mengacu pada elemen file input yang dipicu oleh perubahan
@@ -421,6 +488,12 @@
                 const dataImageItem = document.createElement("div");
                 dataImageItem.classList.add("data_image-item");
 
+                const imgIdItem = document.createElement("input");
+                imgIdItem.type = "hidden";
+                imgIdItem.value = "";
+                imgIdItem.classList.add("img_id-item");
+                imgIdItem.name = 'dataImage[' + trLength + '][img_id-item]';
+
                 const widthItem = document.createElement("input");
                 widthItem.type = "hidden";
                 widthItem.classList.add("width-item");
@@ -450,27 +523,6 @@
                 ratio2.type = "hidden";
                 ratio2.value = 3;
                 ratio2.classList.add("ratio2-item");
-
-                function refreshRowNumbers() {
-                    const rows = previewContainerGambarLainnya.getElementsByTagName("tr");
-
-                    for (let i = 0; i < rows.length; i++) {
-                        const noCell = rows[i].getElementsByTagName("td")[0];
-                        noCell.textContent = i + 1;
-
-                        const inputWidth = rows[i].getElementsByClassName('width-item')[0];
-                        inputWidth.name = 'dataImage[' + i + '][width]';
-
-                        const inputHeight = rows[i].getElementsByClassName('height-item')[0];
-                        inputHeight.name = 'dataImage[' + i + '][height]';
-
-                        const inputX = rows[i].getElementsByClassName('x-item')[0];
-                        inputX.name = 'dataImage[' + i + '][x]';
-
-                        const inputY = rows[i].getElementsByClassName('y-item')[0];
-                        inputY.name = 'dataImage[' + i + '][y]';
-                    }
-                }
 
                 deleteButton.addEventListener("click", function() {
 
@@ -523,6 +575,7 @@
                 actionCell.appendChild(cropButton);
                 actionCell.appendChild(dataImageItem);
 
+                dataImageItem.appendChild(imgIdItem);
                 dataImageItem.appendChild(widthItem);
                 dataImageItem.appendChild(heightItem);
                 dataImageItem.appendChild(xItem);
@@ -553,6 +606,96 @@
                     handleFileInputChange);
             }
         });
+
+        $('.deleteImg_data').off().on("click", function() {
+            let another = this
+            let id = $(this).data('ix')
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success mx-4',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: 'Apakah anda yakin ingin menghapus image ini',
+                icon: 'warning',
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Saya yakin!',
+                cancelButtonText: 'Tidak, Batalkan!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ route('admin.set.deleteImage') }}",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "_method": "DELETE",
+                            "id": id,
+                        },
+                        success: function(response) {
+                            $(another).closest('tr').remove()
+
+                            if ($('.deleteImg_data').length > 1) {
+                                $('.deleteImg_data').removeClass('d-none')
+                            } else {
+                                $('.deleteImg_data').addClass('d-none')
+                            }
+
+                            var toasty = new Toasty(
+                                optionToast);
+                            toasty.configure(optionToast);
+                            toasty.success(response.message);
+
+                            refreshRowNumbers();
+                        }
+                    });
+                }
+            });
+        });
+
+        function refreshRowNumbers() {
+            const rows = previewContainerGambarLainnya.getElementsByTagName("tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                const dataImageItem = rows[i].getElementsByTagName("td")[2].getElementsByClassName('data_image-item')[0];
+
+                // Check if dataImageItem exists before accessing its properties
+                if (dataImageItem) {
+                    const noCell = rows[i].getElementsByTagName("td")[0];
+                    noCell.textContent = i + 1;
+
+                    const inputImgId = dataImageItem.getElementsByClassName('img_id-item')[0];
+                    if (inputImgId) {
+                        inputImgId.name = 'dataImage[' + i + '][img_id]';
+                    }
+
+                    const inputWidth = dataImageItem.getElementsByClassName('width-item')[0];
+                    if (inputWidth) {
+                        inputWidth.name = 'dataImage[' + i + '][width]';
+                    }
+
+                    const inputHeight = dataImageItem.getElementsByClassName('height-item')[0];
+                    if (inputHeight) {
+                        inputHeight.name = 'dataImage[' + i + '][height]';
+                    }
+
+                    const inputX = dataImageItem.getElementsByClassName('x-item')[0];
+                    if (inputX) {
+                        inputX.name = 'dataImage[' + i + '][x]';
+                    }
+
+                    const inputY = dataImageItem.getElementsByClassName('y-item')[0];
+                    if (inputY) {
+                        inputY.name = 'dataImage[' + i + '][y]';
+                    }
+
+                }
+            }
+        }
     </script>
 
     <script type="text/javascript">
@@ -744,6 +887,20 @@
             function resetData() {
 
                 var index = 0;
+                if ($('#daftar_detail tbody tr').length === 1) {
+                    $('.removeData').css('display', 'none');
+                } else {
+                    var inputValue = $('.input_id-item').val().trim();
+                    if (inputValue.length === 1 || inputValue.length === 0) {
+                        // Jika nilai input kosong atau hanya berisi satu karakter
+                        $('.removeData').css('display', 'none');
+                    } else {
+                        // Jika nilai input lebih dari satu karakter
+                        $('.removeData').css('display', 'block');
+                    }
+                }
+
+
                 $(".detail-list").each(function() {
                     var another = this;
                     var key = index;
@@ -780,13 +937,17 @@
 
                         const imageType = /^image\//;
 
+                        $(another).find('.triggerCrop-item').remove()
+                        $(another).find('.data_image-item').empty()
+
                         if (!imageType.test(file.type)) {
                             // Handle non-image files or do nothing
                             return;
                         }
 
-                        $(another).find('.triggerCrop-item').remove()
-                        $(another).find('.data_image-item').empty()
+                        if (file === null || file.length === 0) {
+                            return;
+                        }
 
                         // Button Crop
                         const cropButton = document.createElement("a");
@@ -837,6 +998,61 @@
                         $(another).find('.data_image-item').append(yItem);
                         $(another).find('.data_image-item').append(ratio1);
                         $(another).find('.data_image-item').append(ratio2);
+                    });
+
+                    $(this).find('.removeData').off().on('click', function() {
+                        const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn btn-success mx-4',
+                                cancelButton: 'btn btn-danger'
+                            },
+                            buttonsStyling: false
+                        });
+
+                        swalWithBootstrapButtons.fire({
+                            title: 'Apakah anda yakin ingin menghapus baris ini',
+                            icon: 'warning',
+                            buttonsStyling: false,
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Saya yakin!',
+                            cancelButtonText: 'Tidak, Batalkan!',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                if ($(another).find('.input_id-item').val() !== '') {
+                                    let id = $(another).find('.input_id-item').val()
+                                    $.ajax({
+                                        type: "DELETE",
+                                        url: "{{ route('admin.set.deleteDetail') }}",
+                                        data: {
+                                            "_token": "{{ csrf_token() }}",
+                                            "_method": "DELETE",
+                                            "id": id,
+                                        },
+                                        success: function(response) {
+                                            $(another).remove()
+                                            resetData()
+                                            updateTotalHarga()
+                                            var toasty = new Toasty(
+                                                optionToast);
+                                            toasty.configure(optionToast);
+                                            toasty.success(response.message);
+                                        },
+                                        error: function(response) {
+                                            var toasty = new Toasty(
+                                                optionToast);
+                                            toasty.configure(optionToast);
+                                            toasty.error(response.responseJSON
+                                                .message);
+                                        }
+                                    });
+                                } else {
+                                    $(another).remove()
+                                    resetData()
+                                    updateTotalHarga()
+                                }
+                            }
+                        });
                     });
 
                     index++;
