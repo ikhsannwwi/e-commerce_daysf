@@ -48,19 +48,15 @@ class SettingController extends Controller
         
         $settings = array_column($settings, 'value', 'name');
 
-        // Ambil pengaturan dari database dan tampilkan di halaman
-        return view('administrator.settings.admin.index', compact('settings'));
+        return view('administrator.settings.admin.general', compact('settings'));
     }
 
     public function admin_general_update(Request $request)
     {
-        // return $request;
         //Check permission
         if (!isAllowed(static::$module, "setting")) {
             abort(403);
         }
-
-        
 
         $settings = Setting::get()->toArray();
         $settings = array_column($settings, 'value', 'name');
@@ -88,15 +84,6 @@ class SettingController extends Controller
             Image::make($image->getRealPath())->save($path, 100);
             $data_settings['logo_app_admin'] = $fileName;
         }
-        // elseif ($request->has('remove_logo_app_admin')) {
-        //     if (array_key_exists("logo_app_admin", $settings) && !empty($settings["logo_app_admin"])) {
-        //         $image_path = "./administrator/assets/media/settings/" . $settings["logo_app_admin"];
-        //         if (File::exists($image_path)) {
-        //             File::delete($image_path);
-        //         }
-        //         $data_settings['logo_app_admin'] = null;
-        //     }
-        // }
 
         if ($request->hasFile('favicon')) {
             if (array_key_exists("favicon", $settings)) {
@@ -115,17 +102,6 @@ class SettingController extends Controller
             Image::make($image->getRealPath())->save($path, 100);
             $data_settings['favicon'] = $fileName;
         }
-        // elseif ($request->has('remove_favicon')) {
-        //     if (array_key_exists("favicon", $settings) && !empty($settings["favicon"])) {
-        //         $image_path = "./administrator/assets/media/settings/" . $settings["favicon"];
-        //         if (File::exists($image_path)) {
-        //             File::delete($image_path);
-        //         }
-        //         $data_settings['favicon'] = null;
-        //     }
-        // }
-
-        
 
         $logs = []; // Buat array kosong untuk menyimpan log
 
@@ -146,17 +122,10 @@ class SettingController extends Controller
                 $logs[] = $set;
             }
         }
-
-        
-
-        // Setelah perulangan selesai, $logs akan berisi semua log untuk setiap data yang diproses.
-
-
         //Write log
         createLog(static::$module, __FUNCTION__, 0,$logs);
 
         return redirect(route('admin.settings.admin.general'))->with(['success' => 'Data berhasil di update.']);
-
     }
 
     public function admin_smtp()
@@ -175,7 +144,6 @@ class SettingController extends Controller
 
     public function admin_smtp_update(Request $request)
     {
-        // return $request;
         //Check permission
         if (!isAllowed(static::$module, "setting")) {
             abort(403);
@@ -216,16 +184,100 @@ class SettingController extends Controller
             }
         }
 
-        
-
-        // Setelah perulangan selesai, $logs akan berisi semua log untuk setiap data yang diproses.
-
-
         //Write log
         createLog(static::$module, __FUNCTION__, 0,$logs);
 
         return redirect(route('admin.settings.admin.smtp'))->with(['success' => 'Data berhasil di update.']);
+    }
 
+    public function frontpage_general()
+    {
+        //Check permission
+        if (!isAllowed(static::$module, "setting")) {
+            abort(403);
+        }
+        $settings = Setting::get()->toArray();
+        
+        $settings = array_column($settings, 'value', 'name');
+
+        return view('administrator.settings.frontpage.general', compact('settings'));
+    }
+
+    public function frontpage_general_update(Request $request)
+    {
+        //Check permission
+        if (!isAllowed(static::$module, "setting")) {
+            abort(403);
+        }
+
+        $settings = Setting::get()->toArray();
+        $settings = array_column($settings, 'value', 'name');
+
+        
+        $data_settings = [];
+        $data_settings["nama_app_frontpage"] = $request->nama_app_frontpage;
+        $data_settings["footer_app_frontpage"] = $request->footer_app_frontpage;
+        
+
+        if ($request->hasFile('logo_app_frontpage')) {
+            if (array_key_exists("logo_app_frontpage", $settings)) {
+                $imageBefore = $settings["logo_app_frontpage"];
+                if (!empty($settings["logo_app_frontpage"])) {
+                    $image_path = "./administrator/assets/media/settings/" . $settings["logo_app_frontpage"];
+                    if (File::exists($image_path)) {
+                        File::delete($image_path);
+                    }
+                }
+            }
+
+            $image = $request->file('logo_app_frontpage');
+            $fileName  =  'logo_app_frontpage.' . $image->getClientOriginalExtension();
+            $path = upload_path('settings') . $fileName;
+            Image::make($image->getRealPath())->save($path, 100);
+            $data_settings['logo_app_frontpage'] = $fileName;
+        }
+
+        if ($request->hasFile('favicon_frontpage')) {
+            if (array_key_exists("favicon_frontpage", $settings)) {
+                $imageBefore = $settings["favicon_frontpage"];
+                if (!empty($settings["favicon_frontpage"])) {
+                    $image_path = "./administrator/assets/media/settings/" . $settings["favicon_frontpage"];
+                    if (File::exists($image_path)) {
+                        File::delete($image_path);
+                    }
+                }
+            }
+
+            $image = $request->file('favicon_frontpage');
+            $fileName  =  'favicon_frontpage.' . $image->getClientOriginalExtension();
+            $path = upload_path('settings') . $fileName;
+            Image::make($image->getRealPath())->save($path, 100);
+            $data_settings['favicon_frontpage'] = $fileName;
+        }
+
+        $logs = []; // Buat array kosong untuk menyimpan log
+
+        foreach ($data_settings as $key => $value) {
+            $data = [];
+
+            if (array_key_exists($key, $settings)) {
+                $data["value"] = $value;
+                $set = Setting::where('name', $key)->first();
+                $set->update($data);
+
+                $logs[] = ['---'.$key.'---' => ['Data Sebelumnya' => ['value' => $settings[$key]], 'Data terbaru' => ['value' => $value]]];
+            } else {
+                $data["name"] = $key;
+                $data["value"] = $value;
+                $set = Setting::create($data);
+
+                $logs[] = $set;
+            }
+        }
+        //Write log
+        createLog(static::$module, __FUNCTION__, 0,$logs);
+
+        return redirect(route('admin.settings.frontpage.general'))->with(['success' => 'Data berhasil di update.']);
     }
     
     public function frontpage_api()

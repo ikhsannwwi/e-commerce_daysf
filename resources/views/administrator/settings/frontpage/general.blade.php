@@ -13,14 +13,14 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                                 <li class="breadcrumb-item"><a href="{{ route('admin.settings') }}">Menu Setting</a></li>
-                                <li class="breadcrumb-item"><a href="{{ route('admin.settings.admin') }}">Admin</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('admin.settings.frontpage') }}">Frontpage</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">General</li>
                             </ol>
                         </nav>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form action="{{ route('admin.settings.admin.general.update') }}" method="post"
+                            <form action="{{ route('admin.settings.frontpage.general.update') }}" method="post"
                                 enctype="multipart/form-data" class="form" id="form" data-parsley-validate>
                                 @csrf
                                 @method('PUT')
@@ -30,8 +30,8 @@
                                             <label for="namaAppField" class="form-label">Nama App</label>
                                             <input type="text" id="namaAppField" class="form-control"
                                                 placeholder="Masukan Nama App"
-                                                value="{{ array_key_exists('nama_app_admin', $settings) ? $settings['nama_app_admin'] : 'StartWeb' }}"
-                                                name="nama_app_admin" autocomplete="off" data-parsley-required="true">
+                                                value="{{ array_key_exists('nama_app_frontpage', $settings) ? $settings['nama_app_frontpage'] : 'StartWeb' }}"
+                                                name="nama_app_frontpage" autocomplete="off" data-parsley-required="true">
                                         </div>
                                     </div>
                                 </div>
@@ -42,8 +42,8 @@
                                             <label for="footerAppAdmin" class="form-label">Footer App Admin</label>
                                             <input type="text" id="footerAppAdmin" class="form-control"
                                                 placeholder="Masukan Footer App Admin"
-                                                value="{{ array_key_exists('footer_app_admin', $settings) ? $settings['footer_app_admin'] : 'StartWeb' }}"
-                                                name="footer_app_admin" autocomplete="off" data-parsley-required="true">
+                                                value="{{ array_key_exists('footer_app_frontpage', $settings) ? $settings['footer_app_frontpage'] : 'StartWeb' }}"
+                                                name="footer_app_frontpage" autocomplete="off" data-parsley-required="true">
                                         </div>
                                     </div>
                                 </div>
@@ -55,13 +55,13 @@
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-preview-logo thumbnail mb20" data-trigger="fileinput">
                                                     <img width="200px"
-                                                        src="{{ array_key_exists('logo_app_admin', $settings) ? img_src($settings['logo_app_admin'], 'settings') : '' }}">
+                                                        src="{{ array_key_exists('logo_app_frontpage', $settings) ? img_src($settings['logo_app_frontpage'], 'settings') : '' }}">
                                                 </div>
                                                 <div class="mt-3">
                                                     <label for="logoAppAdminInputFile" class="btn btn-light btn-file">
                                                         <span class="fileinput-new">Select image</span>
                                                         <input type="file" class="d-none" id="logoAppAdminInputFile"
-                                                            name="logo_app_admin">
+                                                            name="logo_app_frontpage">
                                                     </label>
                                                 </div>
                                             </div>
@@ -76,13 +76,13 @@
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-preview-favicon thumbnail mb20" data-trigger="fileinput">
                                                     <img width="200px"
-                                                        src="{{ array_key_exists('favicon', $settings) ? img_src($settings['favicon'], 'settings') : '' }}">
+                                                        src="{{ array_key_exists('favicon_frontpage', $settings) ? img_src($settings['favicon_frontpage'], 'settings') : '' }}">
                                                 </div>
                                                 <div class="mt-3">
                                                     <label for="faviconInputFile" class="btn btn-light btn-file">
                                                         <span class="fileinput-new">Select image</span>
                                                         <input type="file" class="d-none" id="faviconInputFile"
-                                                            name="favicon">
+                                                            name="favicon_frontpage">
                                                     </label>
                                                 </div>
                                             </div>
@@ -115,6 +115,7 @@
 
 @push('js')
 <script src="{{ asset_administrator('assets/plugins/parsleyjs/parsley.min.js') }}"></script>
+<script src="{{ asset_administrator('assets/plugins/parsleyjs/page/parsley.js') }}"></script>
 
     <!-- Tambahkan FileInput JavaScript -->
     <script src="{{ asset_administrator('assets/plugins/form-jasnyupload/fileinput.min.js') }}"></script>
@@ -183,12 +184,6 @@
             const validator = $(form).parsley();
 
             const submitButton = document.getElementById("formSubmit");
-
-            form.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                }
-            });
 
             submitButton.addEventListener("click", async function(e) {
                 e.preventDefault();

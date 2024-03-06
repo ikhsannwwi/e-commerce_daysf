@@ -41,6 +41,8 @@ class DataServiceProvider extends ServiceProvider
         });
 
         view()->composer([
+            'frontpage.layouts.main',
+            'frontpage.layouts.nav',
             'frontpage.home.part.by_category',
             'frontpage.home.part.store',
             'frontpage.home.part.checkout_new_arrivals',

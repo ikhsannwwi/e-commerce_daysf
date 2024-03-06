@@ -113,6 +113,8 @@ Route::prefix('admin')->group(function () {
         Route::put('settings/admin/smtp/update', [SettingController::class, 'admin_smtp_update'])->name('admin.settings.admin.smtp.update');
         Route::get('settings/frontpage/api', [SettingController::class, 'frontpage_api'])->name('admin.settings.frontpage.api');
         Route::put('settings/frontpage/api/update', [SettingController::class, 'frontpage_api_update'])->name('admin.settings.frontpage.api.update');
+        Route::get('settings/frontpage/general', [SettingController::class, 'frontpage_general'])->name('admin.settings.frontpage.general');
+        Route::put('settings/frontpage/general/update', [SettingController::class, 'frontpage_general_update'])->name('admin.settings.frontpage.general.update');
 
         //Modul dan Modul Akses
         Route::get('module', [ModuleController::class, 'index'])->name('admin.module');

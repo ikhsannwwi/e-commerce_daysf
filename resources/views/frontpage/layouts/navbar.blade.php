@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 d-block" data-navbar-on-scroll="data-navbar-on-scroll">
-    <div class="container"><a class="navbar-brand d-inline-flex" href="{{route('web.index')}}"><img class="d-inline-block" src="{{template_frontpage('assets/img/gallery/logo.png')}}" alt="logo" /><span class="text-1000 fs-0 fw-bold ms-2">Majestic</span></a>
+    <div class="container"><a class="navbar-brand d-inline-flex" href="{{route('web.index')}}"><img class="d-inline-block" width="34px" height="24px" src="{{ array_key_exists('logo_app_frontpage', $settings) ? img_src($settings['logo_app_frontpage'], 'settings') : 'http://placehold.it/500x500?text=Not Found' }}" alt="logo" /><span class="text-1000 fs-0 fw-bold ms-2">{{ array_key_exists('nama_app_frontpage', $settings) ? $settings['nama_app_frontpage'] : 'Startweb' }}</span></a>
       <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">

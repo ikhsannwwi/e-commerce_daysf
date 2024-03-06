@@ -10,16 +10,19 @@
     <!-- ===============================================-->
     <!--    Document Title-->
     <!-- ===============================================-->
-    <title>majestic | Landing, Ecommerce &amp; Business Templatee</title>
+    <title>{{ array_key_exists('nama_app_frontpage', $settings) ? $settings['nama_app_frontpage'] : 'Startweb' }}</title>
 
 
     <!-- ===============================================-->
     <!--    Favicons-->
     <!-- ===============================================-->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{template_frontpage('assets/img/favicons/apple-touch-icon.png')}}">
+    <link rel="shortcut icon"
+        href="{{ array_key_exists('favicon_frontpage', $settings) ? img_src($settings['favicon_frontpage'], 'settings') : 'http://placehold.it/500x500?text=Not Found' }}"
+        type="image/png">
+    {{-- <link rel="apple-touch-icon" sizes="180x180" href="{{template_frontpage('assets/img/favicons/apple-touch-icon.png')}}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{template_frontpage('assets/img/favicons/favicon-32x32.png')}}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{template_frontpage('assets/img/favicons/favicon-16x16.png')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{template_frontpage('assets/img/favicons/favicon.ico')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{template_frontpage('assets/img/favicons/favicon.ico')}}"> --}}
     <link rel="manifest" href="{{template_frontpage('assets/img/favicons/manifest.json')}}">
     <meta name="msapplication-TileImage" content="{{template_frontpage('assets/img/favicons/mstile-150x150.png')}}">
     <meta name="theme-color" content="#ffffff">
