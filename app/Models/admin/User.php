@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     // relasi
     public function user_group(){
-        return $this->belongsTo(UserGroup::class, 'user_group_id');
+        return $this->belongsTo(UserGroup::class, 'user_group_id', 'id');
     }
     
     public function profile(){

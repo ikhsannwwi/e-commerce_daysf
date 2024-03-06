@@ -1,4 +1,4 @@
-<section class="py-11">
+<section class="py-11" id="sectionStore">
     <div class="bg-holder overlay overlay-0"
         style="background-image:url({{ template_frontpage('assets/img/gallery/cta.png') }});background-position:center;background-size:cover;">
     </div>

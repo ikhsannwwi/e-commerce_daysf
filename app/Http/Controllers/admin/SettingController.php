@@ -125,33 +125,6 @@ class SettingController extends Controller
         //     }
         // }
 
-        if ($request->hasFile('background_login_panel_admin')) {
-            if (array_key_exists("background_login_panel_admin", $settings)) {
-                $imageBefore = $settings["background_login_panel_admin"];
-                if (!empty($settings["background_login_panel_admin"])) {
-                    $image_path = "./administrator/assets/media/settings/" . $settings["background_login_panel_admin"];
-                    if (File::exists($image_path)) {
-                        File::delete($image_path);
-                    }
-                }
-            }
-
-            $image = $request->file('background_login_panel_admin');
-            $fileName  =  'background_login_panel_admin.' . $image->getClientOriginalExtension();
-            $path = upload_path('settings') . $fileName;
-            Image::make($image->getRealPath())->save($path, 100);
-            $data_settings['background_login_panel_admin'] = $fileName;
-        }
-        // elseif ($request->has('remove_background_login_panel_admin')) {
-        //     if (array_key_exists("background_login_panel_admin", $settings) && !empty($settings["background_login_panel_admin"])) {
-        //         $image_path = "./administrator/assets/media/settings/" . $settings["background_login_panel_admin"];
-        //         if (File::exists($image_path)) {
-        //             File::delete($image_path);
-        //         }
-        //         $data_settings['background_login_panel_admin'] = null;
-        //     }
-        // }
-
         
 
         $logs = []; // Buat array kosong untuk menyimpan log

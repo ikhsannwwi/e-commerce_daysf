@@ -33,7 +33,7 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon"
-        href="{{ array_key_exists('favicon', $settings) ? img_src($settings['favicon'], 'settings') : '' }}"
+        href="{{ array_key_exists('favicon', $settings) ? img_src($settings['favicon'], 'settings') : 'http://placehold.it/500x500?text=Not Found' }}"
         type="image/png">
 
     <!-- Fonts -->

@@ -2,7 +2,7 @@
     <div class="app-brand demo">
         <a href="index.html" class="app-brand-link">
             <span class="app-brand-logo demo">
-                <img src="{{ array_key_exists('logo_app_admin', $settings) ? img_src($settings['logo_app_admin'], 'settings') : 'Startweb' }}"
+                <img src="{{ array_key_exists('logo_app_admin', $settings) ? img_src($settings['logo_app_admin'], 'settings') : 'http://placehold.it/500x500?text=Not Found' }}"
                             width="46px" height="46px" alt="">
             </span>
             <span class="app-brand-text demo menu-text fw-bolder ms-2">{{ array_key_exists('nama_app_admin', $settings) ? $settings['nama_app_admin'] : 'Startweb' }}</span>
@@ -86,6 +86,7 @@
                 </li>
             </ul>
         </li>
+        
         <li class="menu-item {{ Route::is('admin.settings*', 'admin.module*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons bx bx-cog'></i>
